@@ -112,7 +112,7 @@ with DAG(
                 region_key int not null,
                 views int not null,
                 likes int not null,
-                unlikes int not null,
+                dislikes int not null,
                 comment_count int not null,
                 start_trending_date varchar(255) not null,
                 end_trending_date varchar(255) not null,

@@ -31,7 +31,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS youtube_videos (
     trending_date STRING,
     views INT,
     likes INT,
-    unlikes INT,
+    dislikes INT,
     comment_count INT
 )
 PARTITIONED BY (region STRING, year INT, month INT)
@@ -67,7 +67,7 @@ video_df = spark.read \
 
 video_df = video_df.select("video_id", "title", "channel_title", "category_id",
                            col("publish_time").cast("date").alias("publish_time"),
-                           "trending_date", "views", "likes", "unlikes", "comment_count") \
+                           "trending_date", "views", "likes", "dislikes", "comment_count") \
     .withColumn("title", trim(col("title"))) \
     .withColumn("region", lit(region)) \
     .withColumn('year', year('publish_time')) \
@@ -78,7 +78,7 @@ video_df = video_df.drop("id", "category_id").na.drop()
 
 video_df \
     .select("video_id", "title", "channel_title", "category_title", "publish_time", "trending_date",
-            "views", "likes", "unlikes", "comment_count", "region", "year", "month") \
+            "views", "likes", "dislikes", "comment_count", "region", "year", "month") \
     .write \
     .format('hive') \
     .mode('overwrite').insertInto("youtube_videos")

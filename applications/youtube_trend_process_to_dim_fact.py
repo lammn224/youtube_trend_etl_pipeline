@@ -24,7 +24,8 @@ hive_df = spark.read.table("youtube_videos")
 video_dim_df = hive_df \
     .select("video_id", "title") \
     .distinct().orderBy('video_id', 'title') \
-    .withColumn("video_key", monotonically_increasing_id() + 1)
+    .withColumn("video_key", monotonically_increasing_id() + 1) \
+    .withColumnRenamed('title', 'video_title')
 
 channel_dim_df = hive_df \
     .select("channel_title") \
